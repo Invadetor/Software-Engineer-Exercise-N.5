@@ -18,7 +18,7 @@ public class Controller {
 		return completo;
 	}
 
-	public void registerClient(String name, String lastName, int tel) {
+	public void registerClient(String name, String lastName, String tel) {
 		Client c = new Client(name, lastName, tel);
 		if(Parking.getParking().doesClientExistance(c.getCode())){
 			throw new RuntimeException("This client already exists");
@@ -30,11 +30,12 @@ public class Controller {
 		if(Parking.getParking().doesClientExistance(clientCode)) {
 			if(Parking.getParking().isCarAviable(start)) {
 				Client cl = Parking.getParking().findAndGetClient(clientCode);
-				Rental r = new Rental(start, end, cl);
 				Car car = Parking.getParking().getLatestCar();
-				Parking.getParking().assignRental(r, car, cl);
+				Rental r = new Rental(start, end, cl, car);
+				car.setFree(false);
+				Parking.getParking().assignRental(r);
 			} else {
-				throw new RuntimeException("No cars is aviable for the given date");
+				throw new RuntimeException("No car is aviable for the given date");
 			}
 
 		} else {
@@ -42,12 +43,12 @@ public class Controller {
 		}
 	}
 
-	public float giveCarBack(String date, float km, String clientCode) throws ParseException {
+	public float giveCarBack(float km, String clientCode) throws ParseException {
 		Client cl = Parking.getParking().findAndGetClient(clientCode);
-		float totalPrice = Parking.getParking().calculatePrice(date, km, cl);
-		Rental r = cl.getRental();
-		Car car = cl.getCar();
-		Parking.getParking().removeRental(r, car, cl);
+		Rental r = Parking.getParking().getRentalOfClient(clientCode);
+		r.getCar().assignKM(km);
+		r.getCar().setFree(true);
+		float totalPrice = r.calculatePrice();
 		return totalPrice;
 	}
 

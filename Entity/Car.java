@@ -7,33 +7,50 @@ public class Car {
 	private String plate;
 	private float km;
 	private Boolean free;
-	private Rental rental;
-	private Client client;
+
+	private float dayPrice;
 
 
 
-	public Car(String man, String model, String plate) {
+	public Car(String man, String model, String plate, float dayPrice) {
 		manufacter = man;
 		this.model = model;
 		this.plate = plate;
 		km = 0;
+		this.dayPrice = dayPrice;
 		free = true;
 	}
 
-	public void assignRentalAndClient(Client c, Rental r) {
-		this.rental = r;
-		this.client = c;
-		free = false;
-	}
 
-	public void removeRentalAndClient() {
-		this.rental = null;
-		this.client = null;
-		free = true;
+	public void assignKM(float km){
+		this.km = km;
 	}
 
 	public Boolean getFree() {
 		return free;
 	}
 
+	public float getDayPrice() {
+		return dayPrice;
+	}
+
+	public float getKm() {
+		return km;
+	}
+
+	public void setFree(Boolean free) {
+		this.free = free;
+	}
+
+	public String getManufacter() {
+		return manufacter;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public String getPlate() {
+		return plate;
+	}
 }

@@ -8,6 +8,8 @@ import java.util.Date;
 
 public class Parking {
 
+
+	private String nome = "L'unico Parcheggio";
 	private ArrayList<Car> cars;
 	private ArrayList<Client> clients;
 	private ArrayList<Rental> rentals;
@@ -61,22 +63,21 @@ public class Parking {
 		return null;
 	}
 
-	public void assignRental(Rental r, Car ca, Client cl) {
-		cl.assignRentalAndCar(ca, r);
-		ca.assignRentalAndClient(cl, r);
-		clients.add(cl);
+	public Rental getRentalOfClient(String code) {
+		for(Rental r : rentals) {
+			if(code == r.getCode()){
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public void assignRental(Rental r) {
 		rentals.add(r);
 	}
 
 
-	public void removeRental(Rental r, Car ca, Client cl) {
-		cl.removeRentalAndCar();
-		ca.removeRentalAndClient();
-		rentals.remove(r);
-		clients.remove(cl);
-	}
-
-	public float calculatePrice(String date, float km, Client cl) throws ParseException {
+	/* public float calculatePrice(String date, float km, Client cl) throws ParseException {
 		SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
 		Date n = s.parse(date);
 		Date today = new Date();
@@ -86,13 +87,13 @@ public class Parking {
 			return cl.getRental().getPrice();
 		}
 		return -1;
-	}
+	}*/
 
 	public ArrayList<Rental> getRentalsOfTime(String date) {
 		ArrayList<Rental> completo = new ArrayList<>();
-		for(Client c : clients) {
-			if(c.getRental().getStartingDate().equals(date)) {
-				completo.add(c.getRental());
+		for(Rental r : rentals) {
+			if(r.getStartingDate().equals(date)) {
+				completo.add(r);
 			}
 		}
 		return completo;
@@ -107,4 +108,7 @@ public class Parking {
 		return null;
 	}
 
+	public String getNome() {
+		return nome;
+	}
 }
