@@ -1,8 +1,8 @@
-package MyBCE.Boundary;
+package Boundary;
 
 import javax.swing.*;
 
-public class RentingHandler {
+public class RentingHandler extends JFrame {
 
 	private JTextField dateStart;
 	private JTextField dateEnd;
@@ -13,6 +13,5 @@ public class RentingHandler {
 	private JButton giveBack;
 	private JLabel givenBack;
 	private JFrame frame;
-
 
 }

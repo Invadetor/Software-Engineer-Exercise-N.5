@@ -1,6 +1,7 @@
-package MyBCE.Entity;
+package Entity;
 
 import java.lang.reflect.Array;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,45 +10,22 @@ import java.util.Date;
 public class Parking {
 
 
-	private String nome = "L'unico Parcheggio";
 	private ArrayList<Car> cars;
 	private ArrayList<Client> clients;
 	private ArrayList<Rental> rentals;
 	private static Parking parking = null;
 
 
-
 	public static Parking getParking() {
-		if(parking == null) {
+		if (parking == null) {
 			parking = new Parking();
 		}
 		return parking;
 	}
 
-	public void addClient(Client c) {
-		clients.add(c);
-	}
-
-	public void addCar(Car c) {
-		if(cars.indexOf(c) > 50) {
-			throw new RuntimeException("Not enought spaces to add more Cars");
-		} else {
-			cars.add(c);
-		}
-	}
-
 	public Boolean isCarAviable(String date) {
-		for(Car c : cars) {
-			if(c.getFree() == true) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public Boolean doesClientExistance(String code) {
-		for(Client c : clients) {
-			if(c.getCode().equals(code)) {
+		for (Car c : cars) {
+			if (c.getFree() == true) {
 				return true;
 			}
 		}
@@ -55,21 +33,16 @@ public class Parking {
 	}
 
 	public Client findAndGetClient(String code) {
-		for(Client c : clients) {
-			if(c.getCode().equals(code)) {
+		for (Client c : clients) {
+			if (c.getCode().equals(code)) {
 				return c;
 			}
 		}
 		return null;
 	}
 
-	public Rental getRentalOfClient(String code) {
-		for(Rental r : rentals) {
-			if(code == r.getCode()){
-				return r;
-			}
-		}
-		return null;
+	public Rental getLastRentalOfClient(String name, String lastName, String plate) throws SQLException {
+		return Rental.getLastRental(name, lastName, plate);
 	}
 
 	public void assignRental(Rental r) {
@@ -91,8 +64,8 @@ public class Parking {
 
 	public ArrayList<Rental> getRentalsOfTime(String date) {
 		ArrayList<Rental> completo = new ArrayList<>();
-		for(Rental r : rentals) {
-			if(r.getStartingDate().equals(date)) {
+		for (Rental r : rentals) {
+			if (r.getStartingDate().equals(date)) {
 				completo.add(r);
 			}
 		}
@@ -100,8 +73,8 @@ public class Parking {
 	}
 
 	public Car getLatestCar() {
-		for(Car c : cars) {
-			if(c.getFree()) {
+		for (Car c : cars) {
+			if (c.getFree()) {
 				return c;
 			}
 		}
@@ -109,6 +82,6 @@ public class Parking {
 	}
 
 	public String getNome() {
-		return nome;
+		return "Autonoleggio Rossi";
 	}
 }
