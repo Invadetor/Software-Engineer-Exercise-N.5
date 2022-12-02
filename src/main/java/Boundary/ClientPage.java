@@ -60,7 +60,6 @@ public class ClientPage extends JFrame {
 
 	}
 
-
 	private void openRentingHandler() {
 		// TODO - implement ClientPage.openRentingHandler
 		throw new UnsupportedOperationException();

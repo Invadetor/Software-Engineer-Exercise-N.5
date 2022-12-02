@@ -56,14 +56,12 @@ public class AutomobileDao implements DAO<Car, String> {
         String query = "Select * from Cars where plate not in (Select car from Rentals where (startingDate >= '%s' AND startingDate <= '&s') OR (endDate >= '&s' AND endDate <= '&s') OR (startingDate <= '&s' AND endDate>= '&s'))";
         query = String.format(query, startingDate, endDate, startingDate, endDate, startingDate, endDate);
         ResultSet rs = executeQuery(query);
-        Optional<Car> car = null;
+        Car c = null;
         if (rs.next()) {
-            Car c = new Car(rs.getString("manufacturer"), rs.getString("model"), rs.getString("plate"),
+            c = new Car(rs.getString("manufacturer"), rs.getString("model"), rs.getString("plate"),
                     rs.getDouble("pricePerDay"), rs.getDouble("km"), rs.getInt("free") == 1 );
-        } else {
-            throw new CarNotFoundException("Macchina non trovata");
         }
-        return car;
+        return Optional.ofNullable(c);
     }
 
     @Override

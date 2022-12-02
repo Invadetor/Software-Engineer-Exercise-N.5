@@ -145,8 +145,8 @@ public class NoleggioDao implements DAO<Rental, String> {
     @Override
     public boolean save(Rental dato) {
 
-        String query = "insert into Rentals (startingDate, endDate, actualEndDate, code, client, car, price) values ('%s', '%s', '%s', '%s', '%s', '%s', %d)";
-        query = String.format(query, dato.getStartingDate(), dato.getFinalDate(), dato.getDateEffettiva(), dato.getDateEffettiva(),dato.getCode() ,dato.getClient().getCode(), dato.getCar().getPlate(), dato.getPrice());
+        String query = "insert into Rentals (startingDate, endDate, actualEndDate, code, client, car, price) values ('%s', '%s', '%s', '%s', '%s', '%s', %,.2f)";
+        query = String.format(query, dato.getStartingDate(), dato.getFinalDate(), dato.getDateEffettiva(),dato.getCode(), dato.getClient().getCode(), dato.getCar().getPlate(), dato.getPrice());
         try {
             int result = databaseManager.executeUpdate(query);
             return true;

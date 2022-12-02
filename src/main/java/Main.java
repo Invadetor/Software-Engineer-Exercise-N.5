@@ -1,4 +1,5 @@
 import Boundary.ClientPage;
+import Boundary.MainFrame;
 import  Boundary.ManagerPage;
 import  Controller.Controller;
 import Database.DatabaseManager;
@@ -15,7 +16,7 @@ public class Main {
             @Override
 
             public void run() {
-                new ClientPage().setVisible(true);
+                new MainFrame().run();
             }
         });
     }

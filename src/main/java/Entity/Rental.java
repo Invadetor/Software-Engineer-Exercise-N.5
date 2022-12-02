@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class Rental {
@@ -23,15 +24,16 @@ public class Rental {
 	private Client client;
 
 	private Car car;
-	private float price;
+	private double price;
 
 
 	public Rental(String start, String end, Client cl, Car car, String code) {
 		this.startingDate = start;
 		this.finalDate = end;
+		this.dateEffettiva = end;
 		this.client = cl;
 		this.car = car;
-		this.code = code;
+		this.code = UUID.randomUUID().toString();
 	}
 
 
@@ -40,7 +42,7 @@ public class Rental {
 		this.finalDate = end;
 		this.client = cl;
 		this.car = car;
-		this.code = code;
+		this.code = UUID.randomUUID().toString();
 		this.dateEffettiva = actualEndDate;
 	}
 
@@ -118,7 +120,7 @@ public class Rental {
 		this.price = price;
 	}
 
-	public float getPrice() {
+	public double getPrice() {
 		return price;
 	}
 

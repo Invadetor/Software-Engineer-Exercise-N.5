@@ -1,6 +1,7 @@
 package Entity;
 
 import  Database.AutomobileDao;
+import Exceptions.CarNotFoundException;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -71,11 +72,13 @@ public class Car {
 		return plate;
 	}
 
-	public static Car getFreeCar(String startingDate, String endDate) throws SQLException {
+	public static Car getFreeCar(String startingDate, String endDate) throws SQLException, CarNotFoundException {
 		Optional<Car> oc = dao.getFreeCarFromDate(startingDate, endDate);
 		Car car = null;
 		if(oc.isPresent()) {
 			car = oc.get();
+		} else {
+			throw new CarNotFoundException("Macchina non trovata");
 		}
 		return car;
 	}

@@ -10,40 +10,67 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ManagerPage extends JFrame{
+public class ManagerPage extends JPanel {
 
+	public static String name = "ManagerPage";
+	private JPanel panel;
 	private JButton buttonShow;
+	private JButton creaNoleggio;
+	private JButton ritornaAuto;
 	private JTextArea textArea;
 	private JTextField data;
-	private FlowLayout fl;
+	private BoxLayout fl;
+
 
 	public ManagerPage() {
-		super("Manager Page");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setSize(800, 800);
 
-		fl = new FlowLayout(FlowLayout.LEADING);
-		setLayout(fl);
-		setLocationRelativeTo(null);
+		panel = new JPanel();
+
+		setSize(800, 800);
+		fl = new BoxLayout(panel, BoxLayout.Y_AXIS);
+		panel.setLayout(fl);
 
 		data = new JTextField();
 		data.setColumns(20);
-		add(data);
+		panel.add(data);
+
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
 
 		buttonShow = new JButton("Mostra Noleggi");
-		add(buttonShow);
+		buttonShow.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(buttonShow);
+
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
+
 		buttonShow.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				showButton(data.getText());
 			}
-
 		});
 
 		textArea = new JTextArea();
 		textArea.setSize(400, 500);
-		add(textArea);
+		panel.add(textArea);
 
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
+
+		ritornaAuto = new JButton("Ritorna l'auto");
+		ritornaAuto.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(ritornaAuto);
+
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
+		ritornaAuto.addActionListener(new MainFrame.Switch(GiveBackHandler.n));
+
+		creaNoleggio = new JButton("crea Noleggio");
+		creaNoleggio.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panel.add(creaNoleggio);
+
+		panel.add(Box.createRigidArea(new Dimension(0, 50)));
+		creaNoleggio.addActionListener(new MainFrame.Switch(RentingHandler.name));
+
+
+		add(panel);
 	}
 
 	private void showButton(String date) {
@@ -58,6 +85,5 @@ public class ManagerPage extends JFrame{
 			error.getLocalizedMessage();
 		}
 	}
-
 
 }
