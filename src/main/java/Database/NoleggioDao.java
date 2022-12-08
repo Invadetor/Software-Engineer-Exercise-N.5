@@ -9,10 +9,9 @@ import  Exceptions.ClientNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 public class NoleggioDao implements DAO<Rental, String> {
     @Override
@@ -68,14 +67,14 @@ public class NoleggioDao implements DAO<Rental, String> {
             ClienteDao cdao = new ClienteDao();
             AutomobileDao aDao = new AutomobileDao();
 
-            if(cdao.get(rs.getString("customer")).isEmpty() || aDao.get(rs.getString("car")).isEmpty()){
+            if(cdao.get(rs.getString("client")).isEmpty() || aDao.get(rs.getString("car")).isEmpty()){
                 throw new RuntimeException("Inconsistenza nei dati, impossibile trovare dati sul cliente o sul veicolo associato al noleggio");
             }
 
-            Client c = cdao.get(rs.getString("customer")).get();
+            Client c = cdao.get(rs.getString("client")).get();
             Car car = aDao.get(rs.getString("car")).get();
 
-            r = new Rental(rs.getString("code"),rs.getString("startDate"),rs.getString("endDate"),c, car, rs.getString("actualEndDate"));
+            r = new Rental(rs.getString("code"),rs.getString("startingDate"),rs.getString("endDate"),c, car, rs.getString("actualEndDate"));
 
         }
 
@@ -84,7 +83,7 @@ public class NoleggioDao implements DAO<Rental, String> {
     }
 
     public ArrayList<Rental> getRentalOfDate(String date) throws SQLException {
-        String query = "select * from Rental where startingDate <= '%s' and endDate >= '%s' ";
+        String query = "select * from Rentals where startingDate <= '%s' and endDate >= '%s' ";
         query = String.format(query, date, date);
         ResultSet rs = executeQuery(query);
         ArrayList<Rental> rentals = new ArrayList<>();
@@ -92,14 +91,14 @@ public class NoleggioDao implements DAO<Rental, String> {
             ClienteDao cdao = new ClienteDao();
             AutomobileDao aDao = new AutomobileDao();
 
-            if(cdao.get(rs.getString("customer")).isEmpty() || aDao.get(rs.getString("car")).isEmpty()){
+            if(cdao.get(rs.getString("client")).isEmpty() || aDao.get(rs.getString("car")).isEmpty()){
                 throw new RuntimeException("Inconsistenza nei dati, impossibile trovare dati sul cliente o sul veicolo associato al noleggio");
             }
 
-            Client c = cdao.get(rs.getString("customer")).get();
+            Client c = cdao.get(rs.getString("client")).get();
             Car car = aDao.get(rs.getString("car")).get();
 
-            Rental r = new Rental(rs.getString("code"),rs.getString("startDate"),rs.getString("endDate"),c, car, rs.getString("actualEndDate"));
+            Rental r = new Rental(rs.getString("code"),rs.getString("startingDate"),rs.getString("endDate"),c, car, rs.getString("actualEndDate"));
             rentals.add(r);
         }
         return rentals;
@@ -145,8 +144,13 @@ public class NoleggioDao implements DAO<Rental, String> {
     @Override
     public boolean save(Rental dato) {
 
-        String query = "insert into Rentals (startingDate, endDate, actualEndDate, code, client, car, price) values ('%s', '%s', '%s', '%s', '%s', '%s', %,.2f)";
-        query = String.format(query, dato.getStartingDate(), dato.getFinalDate(), dato.getDateEffettiva(),dato.getCode(), dato.getClient().getCode(), dato.getCar().getPlate(), dato.getPrice());
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.ITALIAN);
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(dfs);
+        String s = df.format(dato.getPrice());
+
+        String query = "insert into Rentals (startingDate, endDate, actualEndDate, code, client, car, price) values ('%s', '%s', '%s', '%s', '%s', '%s', %s)";
+        query = String.format(query, dato.getStartingDate(), dato.getFinalDate(), dato.getDateEffettiva(),dato.getCode(), dato.getClient().getCode(), dato.getCar().getPlate(), s);
         try {
             int result = databaseManager.executeUpdate(query);
             return true;

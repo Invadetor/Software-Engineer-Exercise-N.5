@@ -15,6 +15,7 @@ public class GiveBackHandler extends JPanel {
     private JTextField name;
     private JTextField lastName;
     private JTextField plate;
+    private JTextField actualEndDate;
 
     private JButton giveBack;
     private JLabel givenBack;
@@ -35,6 +36,10 @@ public class GiveBackHandler extends JPanel {
         km.setColumns(30);
         panel.add(km);
 
+        actualEndDate = new JTextField();
+        actualEndDate.setColumns(30);
+        panel.add(actualEndDate);
+
         name = new JTextField();
         name.setColumns(30);
         panel.add(name);
@@ -47,7 +52,7 @@ public class GiveBackHandler extends JPanel {
         plate.setColumns(30);
         panel.add(plate);
 
-
+        givenBack = new JLabel();
 
         giveBack = new JButton("Ritorna");
         panel.add(giveBack);
@@ -55,8 +60,9 @@ public class GiveBackHandler extends JPanel {
         giveBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                givenBack.setText(Controller.giveCarBack(Float.parseFloat(km.getText()), name.getText(), lastName.getText(), plate.getText()));
+                givenBack.setText(Controller.giveCarBack(Float.parseFloat(km.getText()), name.getText(), lastName.getText(), actualEndDate.getText(), plate.getText()));
                 panel.add(givenBack);
+
             }
         });
 

@@ -15,8 +15,6 @@ public class ClientPage extends JFrame {
 	private JTextField email;
 	private JButton buttonSign;
 	private JTextArea iscritto;
-	private JButton buttonRentCar;
-	private JButton buttonGiveCar;
 
 	private FlowLayout fl;
 
@@ -58,11 +56,6 @@ public class ClientPage extends JFrame {
 			}
 		});
 
-	}
-
-	private void openRentingHandler() {
-		// TODO - implement ClientPage.openRentingHandler
-		throw new UnsupportedOperationException();
 	}
 
 }

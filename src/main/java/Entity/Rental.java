@@ -16,7 +16,7 @@ public class Rental {
 
 	static NoleggioDao dao = new NoleggioDao();
 
-	private final SimpleDateFormat  s = new SimpleDateFormat("dd/MM/yyyy");
+	private final SimpleDateFormat  s = new SimpleDateFormat("yyyy-mm-dd");
 	private String startingDate;
 	private String dateEffettiva;
 	private String finalDate;
@@ -88,10 +88,10 @@ public class Rental {
 		dao.save(this);
 	}
 
-	public void closeRental(float km) throws SQLException {
+	public void closeRental(float km, String actualEndDate) throws SQLException {
 		car.returnCar(km);
 
-		setDateEffettiva(s.format(new Date()));
+		setDateEffettiva(actualEndDate);
 
 	}
 

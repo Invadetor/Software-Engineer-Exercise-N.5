@@ -5,10 +5,9 @@ import  Exceptions.CarNotFoundException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 public class AutomobileDao implements DAO<Car, String> {
 
@@ -67,9 +66,14 @@ public class AutomobileDao implements DAO<Car, String> {
     @Override
     public boolean save(Car dato) {
 
-        String query = "insert into Cars (plate, model, manufacturer, free, km, pricePerDay) values ('%s', '%s', '%s', %i, %d, %d)";
-        query = String.format(query, dato.getPlate(), dato.getModel(), dato.getManufacter(), dato.getFree()? 1: 0,
-                dato.getKm(),dato.getDayPrice());
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.ITALIAN);
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(dfs);
+        String sKm = df.format(dato.getKm());
+        String sPrice = df.format(dato.getDayPrice());
+
+        String query = "insert into Cars (plate, model, manufacturer, free, km, pricePerDay) values ('%s', '%s', '%s', %i, %s, %s)";
+        query = String.format(query, dato.getPlate(), dato.getModel(), dato.getManufacter(), dato.getFree()? 1: 0, sKm,sPrice);
         return executeUpdate(query);
 
     }
@@ -84,9 +88,14 @@ public class AutomobileDao implements DAO<Car, String> {
 
         Car c = optionalCar.get();
 
-        String query = "update Cars set free = 1, km = %d where plate = '%s'";
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols(Locale.ITALIAN);
+        DecimalFormat df = new DecimalFormat();
+        df.setDecimalFormatSymbols(dfs);
+        String sKm = df.format(km);
 
-        query = String.format(query, c.getKm()+km ,plate);
+        String query = "update Cars set free = 1, km = %s where plate = '%s'";
+
+        query = String.format(query, c.getKm()+sKm ,plate);
         return executeUpdate(query);
     }
 

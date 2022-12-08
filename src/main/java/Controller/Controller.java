@@ -84,12 +84,12 @@ public class Controller {
 		return "Noleggio completato";
 	}
 
-	public static String giveCarBack(float km, String customerName, String customerLastName, String plate) {
+	public static String giveCarBack(float km, String customerName, String customerLastName, String actualEndDate, String plate) {
 		String message = "";
 		double totalPrice = 0;
 		try{
 			Rental r = Parking.getParking().getLastRentalOfClient(customerName, customerLastName, plate);
-			r.closeRental(km);
+			r.closeRental(km, actualEndDate);
 			totalPrice = r.calculatePrice();
 		} catch (SQLException sqle) {
 			return message += "Errore nel Database: " + sqle.getLocalizedMessage();
